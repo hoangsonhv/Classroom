@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-@include("components.head")
+<head>
+    @include("components.head")
+    @stack('link')
+</head>
 <body>
 	<div class="wrapper">
 		<div class="main-header">

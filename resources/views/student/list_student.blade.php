@@ -121,7 +121,7 @@
                                             <td>{{ $student->name }}</td>
                                             <td>{{ $student->phone }}</td>
                                             <td>{{ $student->address }}</td>
-                                            <td>{{ $student->link }}</td>
+                                            <td><a href="{{ $student->link }}">{{ $student->link }}</a></td>
                                             <td>{{ $student->phone_parent }}</td>
                                             <td style="color: red">{{ $student->note }}</td>
                                             <td>

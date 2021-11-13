@@ -57,7 +57,13 @@
                                                     <div class="col-sm-12">
                                                         <div class="form-group form-group-default">
                                                             <label>Tên Ca Học</label>
-                                                            <input name="name" type="text" class="form-control" placeholder="Nhập tên" required>
+{{--                                                            <input name="name" type="text" class="form-control" placeholder="Nhập tên" required>--}}
+                                                            <select name="name" style="width: 100%;border: none">
+                                                                <option hidden>--Chọn ca--</option>
+                                                                <option value="ca-sang">Ca Sáng</option>
+                                                                <option value="ca-chieu">Ca Chiều</option>
+                                                                <option value="ca-toi">Ca Tối</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -87,7 +93,15 @@
                                         @foreach ($shifts as $shift)
                                             <tr>
                                                 <td>{{ $shift->id }}</td>
-                                                <td>{{ $shift->name }}</td>
+                                                <td>
+                                                    @if($shift->name == 'ca-sang')
+                                                        Ca Sáng
+                                                    @elseif($shift->name == 'ca-chieu')
+                                                        Ca Chiều
+                                                    @else
+                                                        Ca Tối
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div class="form-button-action">
                                                         <a href="{{ url('edit-shift',['id'=>$shift->id]) }}">

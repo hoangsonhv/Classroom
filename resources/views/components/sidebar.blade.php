@@ -16,6 +16,22 @@
 					<h4 class="text-section">Danh Mục</h4>
 				</li>
                 <li class="nav-item">
+                    <a href="{{ url('attendance') }}">
+                        <i class="fas fa-list-ol"></i>
+                        <p><b>Điểm Danh</b></p>
+                        {{--                        <span class="caret"></span>--}}
+                    </a>
+                    {{--                    <div class="collapse" id="base5">--}}
+                    {{--                        <ul class="nav nav-collapse">--}}
+                    {{--                            <li>--}}
+                    {{--                                <a href="{{ url('list-shift') }}">--}}
+                    {{--                                    <span class="sub-item">Danh sách các ca học</span>--}}
+                    {{--                                </a>--}}
+                    {{--                            </li>--}}
+                    {{--                        </ul>--}}
+                    {{--                    </div>--}}
+                </li>
+                <li class="nav-item">
                     <a data-toggle="collapse" href="#sidebarLayouts">
                         <i class="fas fa-users"></i>
                         <p>Học Sinh</p>
@@ -64,26 +80,11 @@
 						</ul>
 					</div>
 				</li>
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#base3">
-                        <i class="fas fa-calendar-minus"></i>
-                        <p>Các Ngày Học</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="base3">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ url('list-day') }}">
-                                    <span class="sub-item">Danh sách các ngày học</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#base4">
                         <i class="fas fa-clock"></i>
-                        <p>Các Ca Học</p>
+                        <p>Ca Học</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="base4">
@@ -91,6 +92,23 @@
                             <li>
                                 <a href="{{ url('list-shift') }}">
                                     <span class="sub-item">Danh sách các ca học</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#base3">
+                        <i class="fas fa-dollar-sign"></i>
+                        <p>Học Phí</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="base3">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ url('list-tuition') }}">
+                                    <span class="sub-item">Danh sách học phí</span>
                                 </a>
                             </li>
                         </ul>

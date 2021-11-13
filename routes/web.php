@@ -6,6 +6,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,8 @@ Route::post('/add-shift',[ShiftController::class,'AddShift']);
 Route::get('/delete-shift/{id}',[ShiftController::class,'deleteShift']);
 Route::get('/edit-shift/{id}',[ShiftController::class,'editShift']);
 Route::post('/save-shift/{id}',[ShiftController::class,'saveShift']);
+
+Route::get('/attendance',[AttendanceController::class,'Attendance']);
+Route::get('/list-attendance',[AttendanceController::class,'ListAttendance']);
+
+

@@ -12,10 +12,10 @@ class ScheduleController extends Controller
 {
     public function ListSchedule(){
         $schedules = Schedule::with(['Shift','Subject'])->get();
-        $id_student = [];
-        foreach ($schedules as $schedu){
-            $id_student[] = $schedu->id_student;
-        }
+//        $id_student = [];
+//        foreach ($schedules as $schedu){
+//            $id_student[] = $schedu->id_student;
+//        }
         $students = Student::all();
         $subjects = Subject::all();
         $shifts = Shift::all();
@@ -24,7 +24,7 @@ class ScheduleController extends Controller
             'students'=>$students,
             'subjects'=>$subjects,
             'shifts'=>$shifts,
-            'id_student'=>$id_student,
+//            'id_student'=>$id_student,
         ]);
     }
 
@@ -62,8 +62,21 @@ class ScheduleController extends Controller
 
     public function editSchedule($id){
         $schedule = Schedule::findOrFail($id);
+        $students = Student::all();
+        $subjects = Subject::all();
+        $shifts = Shift::all();
+//        $studen = Student::whereIn('id',$schedule->id_student)->get();
+//        $list_name = [];
+//        foreach ($studen as $stu){
+//            $list_name[] = $stu->name;
+//        }
+//        dd($list_name);
         return view('schedule/edit_schedule', [
             'schedule'=>$schedule,
+            'students'=>$students,
+            'subjects'=>$subjects,
+            'shifts'=>$shifts,
+//            'list_name'=>$list_name,
         ]);
     }
 
