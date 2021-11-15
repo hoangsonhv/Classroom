@@ -104,11 +104,11 @@
                                                 </td>
                                                 <td>
                                                     <div class="form-button-action">
-                                                        <a href="{{ url('edit-shift',['id'=>$shift->id]) }}">
-                                                            <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Sửa">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                        </a>
+{{--                                                        <a href="{{ url('edit-shift',['id'=>$shift->id]) }}">--}}
+{{--                                                            <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Sửa">--}}
+{{--                                                                <i class="fa fa-edit"></i>--}}
+{{--                                                            </button>--}}
+{{--                                                        </a>--}}
 
                                                         <a href="{{ url('delete-shift',['id'=>$shift->id]) }}">
                                                             <button style="margin-top: 4px" onclick="return confirm('Xóa nhé !')" type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Xóa">

@@ -38,15 +38,28 @@
                         <option value="saturday">Thứ Bẩy</option>
                         <option value="sunday">Chủ Nhật</option>
                     </select>
-
                 </div>
                 <div class="form-group">
                     <label>Ca</label>
                     <select name="id_shift" class="form-control">
                         @foreach($shifts as $shift)
-                            <option hidden value="{{ $schedule->id_shift }}"> {{ $schedule->shift->name }} </option>
-                            <option value="{{$shift->id}}">
-                                {{ $shift->name }}
+                            <option hidden value="{{ $schedule->id_shift }}">
+                                @if($schedule->shift->name == 'ca-sang')
+                                    Ca Sáng
+                                @elseif($schedule->shift->name == 'ca-chieu')
+                                    Ca Chiều
+                                @else
+                                    Ca Tối
+                                @endif
+                            </option>
+                            <option value="{{ $shift->id }}">
+                                @if($shift->name =='ca-sang')
+                                    Ca Sáng
+                                @elseif($shift->name == 'ca-chieu')
+                                    Ca Chiều
+                                @else
+                                    Ca Tối
+                                @endif
                             </option>
                         @endforeach
                     </select>

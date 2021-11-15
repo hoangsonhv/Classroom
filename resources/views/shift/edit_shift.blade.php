@@ -7,7 +7,13 @@
             <div class="col-md-10 col-lg-10" style="margin: auto">
                 <div class="form-group">
                     <label>Tên Ca Học</label>
-                    <input name="name" value="{{ $shift->name }}" type="text" class="form-control" required>
+                    <select name="name" style="width: 100%;border: none">
+                        <option hidden>@if($shift->name == 'ca-sang') Ca Sáng @elseif($shift->name == 'ca-chieu') Ca Chiều @else Ca Tối @endif</option>
+                        <option value="ca-sang">Ca Sáng</option>
+                        <option value="ca-chieu">Ca Chiều</option>
+                        <option value="ca-toi">Ca Tối</option>
+                    </select>
+{{--                    <input name="name" value="@if($shift->name == 'ca-sang') Ca Sáng @elseif($shift->name == 'ca-chieu') Ca Chiều @else Ca Tối @endif" type="text" class="form-control" required>--}}
                 </div>
 
             </div>

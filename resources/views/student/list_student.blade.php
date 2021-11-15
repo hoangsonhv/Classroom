@@ -109,7 +109,7 @@
                                         <th>Số điện thoại</th>
                                         <th>Địa chỉ</th>
                                         <th>Link FB</th>
-                                        <th>Số điện thoại phụ huynh</th>
+                                        <th>SĐT Phụ huynh</th>
                                         <th>Ghi chú</th>
                                         <th style="width: 10%">Thao tác</th>
                                     </tr>
@@ -121,7 +121,7 @@
                                             <td>{{ $student->name }}</td>
                                             <td>{{ $student->phone }}</td>
                                             <td>{{ $student->address }}</td>
-                                            <td><a href="{{ $student->link }}">{{ $student->link }}</a></td>
+                                            <td style="line-height: 1.2;max-width: 150px;text-overflow: clip;"><a href="{{ $student->link }}">{{ $student->link }}</a></td>
                                             <td>{{ $student->phone_parent }}</td>
                                             <td style="color: red">{{ $student->note }}</td>
                                             <td>

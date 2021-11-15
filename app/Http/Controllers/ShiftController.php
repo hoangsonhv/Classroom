@@ -49,6 +49,7 @@ class ShiftController extends Controller
     }
 
     public function saveShift(Request $request,$id){
+        dd($request);
         $request->validate([
             'name' => 'required',
         ]);

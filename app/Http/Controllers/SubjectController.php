@@ -28,7 +28,7 @@ class SubjectController extends Controller
                 'name'=>$request->name,
                 'price'=>$request->price,
             ]);
-        } catch (Exeption $e) {
+        } catch (\Exception $e) {
             return back()->with('error',"Lỗi khi thêm mới");
         }
 
@@ -61,7 +61,7 @@ class SubjectController extends Controller
                 'name'=>$request->name,
                 'price'=>$request->price,
             ]);
-        }catch(Exeption $e){
+        }catch(\Exception $e){
             return back()->with('error',"Lỗi khi cập nhật");
         }
         return redirect("list-subject")->with('success',"Cập nhật thành công");

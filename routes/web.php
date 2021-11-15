@@ -50,6 +50,11 @@ Route::get('/edit-shift/{id}',[ShiftController::class,'editShift']);
 Route::post('/save-shift/{id}',[ShiftController::class,'saveShift']);
 
 Route::get('/attendance',[AttendanceController::class,'Attendance']);
+Route::post('/attendances/{id}',[AttendanceController::class,'Attendances']);
 Route::get('/list-attendance',[AttendanceController::class,'ListAttendance']);
+Route::get('/delete-attendance/{id}',[AttendanceController::class,'deleteAttendance']);
+Route::get('/all-attendance',[AttendanceController::class,'allAttendance']);
+Route::post('/save-attendance/{id}',[AttendanceController::class,'saveAttendance']);
+Route::get('/edit-attendance/{id}',[AttendanceController::class,'editAttendance']);
 
 

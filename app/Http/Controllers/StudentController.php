@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shift;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use MongoDB\Driver\Exception\Exception;
 
 class StudentController extends Controller
 {
@@ -36,7 +37,8 @@ class StudentController extends Controller
                 'link'=>$request->link,
                 'note'=>$request->note,
             ]);
-        } catch (Exeption $e) {
+
+        } catch (\Exception $e) {
             return back()->with('error',"Lỗi khi thêm mới");
         }
         return back()->with('success',"Thêm thành công !");
@@ -78,7 +80,7 @@ class StudentController extends Controller
                 'link'=>$request->link,
                 'phone_parent'=>$request->phone_parent,
             ]);
-        }catch(Exeption $e){
+        }catch(\Exception $e){
             return back()->with('error',"Lỗi khi cập nhật");
         }
         return redirect("list-student")->with('success',"Cập nhật thành công");

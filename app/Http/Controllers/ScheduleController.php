@@ -44,7 +44,7 @@ class ScheduleController extends Controller
                 'id_student'=>$request->id_student,
             ]);
 
-        } catch (Exeption $e) {
+        } catch (\Exception $e) {
             return back()->with('error',"Lỗi khi thêm mới");
         }
 
@@ -95,7 +95,7 @@ class ScheduleController extends Controller
                 'id_subject'=>$request->id_subject,
                 'id_student'=>$request->id_student,
             ]);
-        }catch(Exeption $e){
+        }catch(\Exception $e){
             return back()->with('error',"Lỗi khi cập nhật");
         }
         return redirect("list-schedule")->with('success',"Cập nhật thành công");

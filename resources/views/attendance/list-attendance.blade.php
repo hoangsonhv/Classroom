@@ -34,7 +34,7 @@
                                     <form action="{{ url('list-attendance') }}" method="get" enctype="multipart/form-data" style="margin: auto">
                                         @csrf
                                         <div class="form-group">
-                                            <label style="width: 75px;">Chọn ngày : </label>
+                                            <label style="width: 75px;">Chọn Ngày : </label>
                                             <input type="date" style="height: 40px;width: 155px" name="time" required>
                                         </div>
                                         <div class="form-group">
@@ -50,6 +50,17 @@
                                                         @elseif($shift->name == 'ca-toi')
                                                             Ca Tối
                                                         @endif
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="width: 75px;">Chọn Môn : </label>
+                                            <select name="subject" required style="height: 40px;width: 155px">
+                                                @foreach($subject as $sub)
+                                                    <option hidden>-- Chọn Môn --</option>
+                                                    <option value="{{ $sub->id }}">
+                                                       {{ $sub->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
