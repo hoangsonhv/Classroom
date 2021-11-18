@@ -16,7 +16,7 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <span>Danh sách điểm danh</span>
+                        <span>Bảng điểm danh</span>
                     </li>
                 </ul>
             </div>
@@ -25,7 +25,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách học sinh đã điểm danh</h4>
+                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách các buổi học</h4>
                             </div>
                         </div>
                         <div class="card-body">

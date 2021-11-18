@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use App\Models\Shift;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -55,6 +56,9 @@ class StudentController extends Controller
 
     public function editStudent($id){
         $student = Student::findOrFail($id);
+
+        $schedules = Schedule::whereIn('id_student',["4","6"])->get();
+        dd($schedules);
         return view('student/edit_student', [
             'student'=>$student,
         ]);

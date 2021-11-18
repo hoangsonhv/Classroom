@@ -14,7 +14,7 @@ use function GuzzleHttp\Promise\all;
 class AttendanceController extends Controller
 {
     public function allAttendance(){
-        $attendances = Attendance::all();
+        $attendances = Attendance::with(['Shift','Subject','Student'])->orderBy('id','DESC')->get();
         return view('attendance/all-attendance',[
             'attendances'=>$attendances
         ]);
@@ -30,55 +30,77 @@ class AttendanceController extends Controller
     }
 
     public function ListAttendance(Request $request){
-        $students = null;
-        $shifts = Shift::where('name',$request->shift)->first();
-        $subject = Subject::where('id',$request->subject)->first();
-        // danh sách hs điểm danh trong ngày
-        $list_attendance = Attendance::with(['Shift','Subject','Student'])
-            ->where('date',Carbon::now()->toDateString())
-            ->where('id_shift',$shifts->id)
-            ->where('id_subject',$subject->id)
-            ->get();
-        // lấy thứ
-        $date = Carbon::parse($request->time);
-        $dayName = $date->getTranslatedDayName();
+        try {
+            $students = null;
+            $shifts = Shift::where('name',$request->shift)->first();
+            $subject = Subject::where('id',$request->subject)->first();
+            $data = $request->except("_token");
+            session(['data_atten'=>$subject]);
+            session(['data_atten1'=>$shifts]);
+            session(['data_request'=>$data]);
+            // danh sách hs điểm danh trong ngày
+            $list_attendance = Attendance::with(['Shift','Subject','Student'])
+                ->where('date',session()->get('data_request')['time'])
+                ->where('id_shift',$shifts->id)
+                ->where('id_subject',$subject->id)
+                ->get();
+            // lấy thứ
+            $date = Carbon::parse(session()->get('data_request')['time']);
+//        dd($request->time);
+            $dayName = $date->getTranslatedDayName();
 
-        // lấy id hs
-        $schedules = Schedule::with(['Shift','Subject'])
-            ->where('rank',$dayName)
-            ->where('id_shift',$shifts->id)
-            ->where('id_subject',$subject->id)
-            ->get();
+            // lấy id hs
+            $schedules = Schedule::with(['Shift','Subject'])
+                ->where('rank',$dayName)
+                ->where('id_shift',$shifts->id)
+                ->where('id_subject',$subject->id)
+                ->get();
 
-        $id_student = null;
-        if ($schedules->first() != null){
-            foreach ($schedules as $schedule){
-                $id_student = $schedule->id_student;
+            $id_student = null;
+            if ($schedules->first() != null){
+                foreach ($schedules as $schedule){
+                    $id_student = $schedule->id_student;
+                }
+
+                // lấy hs
+                $students = Student::whereIn('id',$id_student)->get();
             }
+            // lấy data điểm danh
 
-        // lấy hs
-            $students = Student::whereIn('id',$id_student)->get();
+//        dd(session()->get('data_atten')['name']);
+            return view("attendance/attendance",[
+                'students'=>$students,
+                'list_attendance'=>$list_attendance,
+                'subject'=>$subject,
+                'shifts'=>$shifts,
+
+            ]);
+        }catch (\Exception $e){
+            return redirect()->back()->with('error',"Đã có lỗi xảy ra!");
         }
-        // lấy data điểm danh
-        $data = $request->except("_token");
-        session(['data_atten'=>$subject]);
-        session(['data_atten1'=>$shifts]);
-        session(['data_request'=>$data]);
-        return view("attendance/attendance",[
-            'students'=>$students,
-            'list_attendance'=>$list_attendance,
-
-        ]);
     }
 
-    public function Attendances($id, Request $request){
-        $attendances = Attendance::insert([
-            'date'=>Carbon::now()->toDateString(),
-            'id_shift'=>session()->get('data_atten1')['id'],
-            'id_subject'=>session()->get('data_atten')['id'],
-            'id_student'=>$id,
-        ]);
-        return redirect()->back()->with('success','Điểm danh thành công!');
+    public function Attendances($id){
+        try {
+            $atten = Attendance::with(['Shift','Subject','Student'])
+                ->where('date',session()->get('data_request')['time'])
+                ->where('id_shift',session()->get('data_atten1')['id'])
+                ->where('id_subject',session()->get('data_atten')['id'])
+                ->where('id_student',$id)
+                ->get();
+            if ($atten->first() == null){
+                $attendances = Attendance::insert([
+                    'date'=>session()->get('data_request')['time'],
+                    'id_shift'=>session()->get('data_atten1')['id'],
+                    'id_subject'=>session()->get('data_atten')['id'],
+                    'id_student'=>$id,
+                ]);
+                return redirect()->back()->with('success','Điểm danh thành công!');
+            }
+            return redirect()->back()->with('success',"Đã điểm danh rồi");
+        }catch (\Exception $e){
+            return redirect()->back()->with('error',"Đã có lỗi xảy ra");
+        }
     }
 
     public function deleteAttendance($id){

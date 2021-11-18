@@ -16,7 +16,18 @@
                         <i class="flaticon-right-arrow"></i>
                     </li>
                     <li class="nav-item">
-                        <span>Điểm danh trong ngày</span>
+                        <span>Điểm danh Ngày: <b>{{ session()->get('data_request')['time'] }}</b></span>
+                        <span> -
+                            <b>@if(session()->get('data_request')['shift'] == 'ca-sang')
+                                    Ca Sáng
+                                @elseif(session()->get('data_request')['shift'] == 'ca-chieu')
+                                    Ca Chiều
+                                @elseif(session()->get('data_request')['shift'] == 'ca-toi')
+                                    Ca Tối
+                                @endif
+                            </b>
+                        </span>
+                        <span> - <b>{{ session()->get('data_atten')['name'] }}</b></span>
                     </li>
                 </ul>
             </div>
@@ -31,7 +42,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="basic-datatables" class="display table table-striped table-hover table-bordered" >
+                                    <table id="add-row" class="display table table-striped table-hover table-bordered" >
                                         <thead>
                                             <tr>
                                                 <th>STT</th>
@@ -87,22 +98,19 @@
                        <div class="card-body">
                            @if($students != null)
                                <div class="table-responsive" style="margin-top: 20px;margin-bottom: 20px">
-                                   <table id="add-row" class="display table table-striped table-hover table-bordered" >
+                                   <table id="basic-datatables"id="add-row" class="display table table-striped table-hover table-bordered" >
                                        <thead>
                                        <tr>
                                            <th>ID HS</th>
                                            <th>Họ và Tên</th>
                                            <th>Môn Học</th>
                                            <th>Ca Học</th>
-                                           <th>Số điện thoại</th>
-                                           <th>Địa chỉ</th>
                                            <th style="max-width: 150px">Link FB</th>
-                                           <th>SĐT Phụ huynh</th>
-                                           <th>Ghi chú</th>
                                            <th style="width: 10%">Thao tác</th>
                                        </tr>
                                        </thead>
                                        <tbody>
+
                                        @foreach ($students as $student)
                                            <tr>
                                                <td>{{ $student->id }}</td>
@@ -117,18 +125,28 @@
                                                        Ca Tối
                                                    @endif
                                                </td>
-                                               <td>{{ $student->phone }}</td>
-                                               <td>{{ $student->address }}</td>
                                                <td style="text-overflow: clip;max-width: 150px;line-height: 1.2"><a href="{{ $student->link }}">{{ $student->link }}</a></td>
-                                               <td>{{ $student->phone_parent }}</td>
-                                               <td >{{ $student->note }}</td>
-                                               <td>
-                                                   <form action="{{ url('attendances',['id'=>$student->id]) }}" enctype="multipart/form-data" method="post">
-                                                       @csrf
-                                                       <a href="{{ url('attendances',['id'=>$student->id]) }}" style="text-decoration: none">
-                                                           <button type="submit" data-toggle="tooltip" title="" class="btn btn-link" style="font-weight: 600;color: red">ĐIỂM DANH</button>
-                                                       </a>
-                                                   </form>
+                                               <td style="text-align: center">
+                                               @php
+                                                   $list_attendance = \App\Models\Attendance::with(['Shift','Subject','Student'])
+                                                      ->where('date',session()->get('data_request')['time'])
+                                                      ->where('id_shift',$shifts->id)
+                                                      ->where('id_subject',$subject->id)
+                                                      ->where('id_student',$student->id)
+                                                      ->first();
+                                               @endphp
+                                                   @if($list_attendance != null)
+                                                       @if( $list_attendance->id_student == $student->id)
+                                                           <span style="font-size: 15px;color:blue;font-weight: 600">ĐÃ ĐIỂM DANH</span>
+                                                       @endif
+                                                   @else
+                                                       <form action="{{ url('attendances',['id'=>$student->id]) }}" enctype="multipart/form-data" method="post">
+                                                           @csrf
+                                                           <a href="{{ url('attendances',['id'=>$student->id]) }}" style="text-decoration: none">
+                                                               <button type="submit" data-toggle="tooltip" title="" class="btn btn-link" style="font-weight: 600;color: red">ĐIỂM DANH</button>
+                                                           </a>
+                                                       </form>
+                                                   @endif
                                                </td>
                                            </tr>
                                        @endforeach

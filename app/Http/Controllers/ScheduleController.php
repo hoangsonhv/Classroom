@@ -29,24 +29,23 @@ class ScheduleController extends Controller
     }
 
     public function AddSchedule(Request $request){
-//        dd($request->id_student);
         $request->validate([
             'rank' => 'required',
             'id_shift' => 'required',
             'id_subject' => 'required',
             'id_student' => 'required',
         ]);
-        try {
+//        try {
             Schedule::create([
                 'rank'=>$request->rank,
                 'id_shift'=>$request->id_shift,
                 'id_subject'=>$request->id_subject,
                 'id_student'=>$request->id_student,
             ]);
-
-        } catch (\Exception $e) {
-            return back()->with('error',"Lỗi khi thêm mới");
-        }
+//            dd('aaa');
+//        } catch (\Exception $e) {
+//            return back()->with('error',"Lỗi khi thêm mới");
+//        }
 
         return back()->with('success',"Thêm thành công !");
     }

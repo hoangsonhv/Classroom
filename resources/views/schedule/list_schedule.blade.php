@@ -199,7 +199,7 @@
                                                 </td>
                                                 <td>{{ $schedule->subject->name }}</td>
                                                 <td>
-                                                    {{ implode(' - ',$list_name) }}
+                                                    {{ implode($list_name, ' -- ') }}
                                                 </td>
                                                 <td>
                                                     <div class="form-button-action">

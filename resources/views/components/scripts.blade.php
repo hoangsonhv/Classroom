@@ -34,7 +34,7 @@
 
 <!-- Atlantis JS -->
 <script src="{{asset('assets/js/atlantis.min.js')}}"></script>
-<script src="../../assets/js/setting-demo2.js"></script>
+{{--<script src="../../assets/js/setting-demo2.js"></script>--}}
 <script >
     $(document).ready(function() {
         $('#basic-datatables').DataTable({
