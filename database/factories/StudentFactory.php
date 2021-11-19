@@ -23,6 +23,7 @@ class StudentFactory extends Factory
             "link"=>$this->faker->url(),
             "phone_parent"=>$this->faker->numberBetween(1111111111,999999999),
             "note"=>$this->faker->paragraph(),
+            "id_subject"=>[mt_rand(1,20),mt_rand(1,20)],
         ];
     }
 }

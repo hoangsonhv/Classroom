@@ -31,6 +31,7 @@ Route::post('/add-student',[StudentController::class,'AddStudent']);
 Route::get('/delete-student/{id}',[StudentController::class,'deleteStudent']);
 Route::get('/edit-student/{id}',[StudentController::class,'editStudent']);
 Route::post('/save-student/{id}',[StudentController::class,'saveStudent']);
+Route::get('/detail-student/{id}',[StudentController::class,'DetailStudent']);
 
 Route::get('/list-subject',[SubjectController::class,'ListSubject']);
 Route::post('/add-subject',[SubjectController::class,'AddSubject']);
@@ -58,9 +59,10 @@ Route::get('/all-attendance',[AttendanceController::class,'allAttendance']);
 Route::post('/save-attendance/{id}',[AttendanceController::class,'saveAttendance']);
 Route::get('/edit-attendance/{id}',[AttendanceController::class,'editAttendance']);
 
-
 Route::get('/list-tuition',[TuitionController::class,'ListTuition']);
 Route::post('/add-shift',[ShiftController::class,'AddShift']);
 Route::get('/delete-shift/{id}',[ShiftController::class,'deleteShift']);
 Route::get('/edit-shift/{id}',[ShiftController::class,'editShift']);
 Route::post('/save-shift/{id}',[ShiftController::class,'saveShift']);
+
+

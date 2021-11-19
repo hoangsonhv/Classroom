@@ -21,6 +21,7 @@ class CreateStudentsTable extends Migration
             $table->integer("phone")->nullable();
             $table->string("note");
             $table->string("link");
+            $table->json("id_subject");
             $table->timestamps();
         });
     }

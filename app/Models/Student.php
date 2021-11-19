@@ -11,7 +11,11 @@ class Student extends Model
 
     public $table = "students";
 
-    public $fillable = ['id','name','phone','address','link','phone_parent','note'];
+    public $fillable = ['id','name','phone','address','link','phone_parent','note','id_subject'];
+
+    protected $casts = [
+        'id_subject' => 'array'
+    ];
 
 }
 

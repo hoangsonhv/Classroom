@@ -1,7 +1,19 @@
 @extends('layout')
 @push('title')
     <title>Danh sách học sinh</title>
-
+@endpush
+@push('link')
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--multiple{
+            border: none;
+            padding-left: 0;
+        }
+        .select2-container--default.select2-container--focus .select2-selection--multiple{
+            border: none;
+        }
+    </style>
 @endpush
 @section('main')
     <div class="content">
@@ -85,10 +97,25 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group form-group-default">
+                                                            <label>Môn Học</label>
+                                                            @if($subjects->first() != null)
+                                                                <select class="js-select2" multiple="multiple" name="id_subject[]" data-placeholder="Chọn môn học">
+                                                                    @foreach($subjects as $subject)
+                                                                        <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            @else
+                                                                <span class="form-control">Chưa có môn học nào</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-group-default">
                                                             <label>Ghi chú</label>
                                                             <textarea name="note"  rows="5" style="width: 100%;border: none"></textarea>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                                 <div class="modal-footer no-bd">
                                                     <button type="submit" class="btn btn-primary">Thêm</button>
@@ -104,25 +131,32 @@
                                 <table id="add-row" class="display table table-striped table-hover" >
                                     <thead>
                                     <tr>
-                                        <th>STT</th>
                                         <th>Họ và Tên</th>
                                         <th>Số điện thoại</th>
                                         <th>Địa chỉ</th>
                                         <th>Link FB</th>
                                         <th>SĐT Phụ huynh</th>
+                                        <th style="min-width: 85px">Các Môn Theo Học</th>
                                         <th>Ghi chú</th>
                                         <th style="width: 10%">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach ($students as $student)
+                                        @php
+                                            $subject = \App\Models\Subject::whereIn('id',$student->id_subject)->get();
+                                            $list_name = [];
+                                            foreach($subject as $sub){
+                                                $list_name[] = $sub->name;
+                                            }
+                                        @endphp
                                         <tr>
-                                            <td>{{ $student->id }}</td>
-                                            <td>{{ $student->name }}</td>
+                                            <td><a href="{{ url("detail-student",['id'=>$student->id]) }}" style="text-decoration: none">{{ $student->name }}</a></td>
                                             <td>{{ $student->phone }}</td>
                                             <td>{{ $student->address }}</td>
                                             <td style="line-height: 1.2;max-width: 150px;text-overflow: clip;"><a href="{{ $student->link }}">{{ $student->link }}</a></td>
                                             <td>{{ $student->phone_parent }}</td>
+                                            <td>{!! implode($list_name, " <br>" ) !!}</td>
                                             <td style="color: red">{{ $student->note }}</td>
                                             <td>
                                                 <div class="form-button-action">
@@ -151,3 +185,34 @@
     </div>
 
 @endsection
+@push('js')
+    {{--    <script src="{{asset("https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")}}"></script>--}}
+    <script src="{{asset("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")}}" ></script>
+    <script src="{{asset("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js")}}"></script>
+    <script>
+        $(".js-select2").select2({
+            closeOnSelect : false,
+            placeholder : "Placeholder",
+            allowHtml: true,
+            allowClear: true,
+            tags: true // создает новые опции на лету
+        });
+        $('.icons_select2').select2({
+            width: "100%",
+            templateSelection: iformat,
+            templateResult: iformat,
+            allowHtml: true,
+            placeholder: "Placeholder",
+            dropdownParent: $( '.select-icon' ),//обавили класс
+            allowClear: true,
+            multiple: false
+        });
+        function iformat(icon, badge,) {
+            var originalOption = icon.element;
+            var originalOptionBadge = $(originalOption).data('badge');
+
+            return $('<span><i class="fa ' + $(originalOption).data('icon') + '"></i> ' + icon.text + '<span class="badge">' + originalOptionBadge + '</span></span>');
+        }
+    </script>
+
+@endpush

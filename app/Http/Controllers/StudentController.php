@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Schedule;
 use App\Models\Shift;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use MongoDB\Driver\Exception\Exception;
 
@@ -14,8 +16,10 @@ class StudentController extends Controller
 
     public function ListStudent(){
         $students = Student::all();
+        $subjects = Subject::all();
         return view('student/list_student',[
             'students'=>$students,
+            'subjects'=>$subjects,
         ]);
     }
 
@@ -28,6 +32,7 @@ class StudentController extends Controller
             'phone_parent' => 'required',
             'note' => 'required',
             'link' => 'required',
+            'id_subject' => 'required',
         ]);
         try {
             Student::create([
@@ -37,6 +42,7 @@ class StudentController extends Controller
                 'phone_parent'=>$request->phone_parent,
                 'link'=>$request->link,
                 'note'=>$request->note,
+                'id_subject'=>$request->id_subject,
             ]);
 
         } catch (\Exception $e) {
@@ -56,11 +62,11 @@ class StudentController extends Controller
 
     public function editStudent($id){
         $student = Student::findOrFail($id);
-
-        $schedules = Schedule::whereIn('id_student',["4","6"])->get();
-        dd($schedules);
+        $subject = Subject::all();
+//        dd($subject);
         return view('student/edit_student', [
             'student'=>$student,
+            'subject'=>$subject,
         ]);
     }
 
@@ -73,6 +79,7 @@ class StudentController extends Controller
             'phone' => 'required',
             'phone_parent' => 'required',
             'link' => 'required',
+            'id_subject' => 'required',
         ]);
         try{
             $student = Student::findOrFail($id);
@@ -83,6 +90,7 @@ class StudentController extends Controller
                 'phone'=>$request->phone,
                 'link'=>$request->link,
                 'phone_parent'=>$request->phone_parent,
+                'id_subject'=>$request->id_subject,
             ]);
         }catch(\Exception $e){
             return back()->with('error',"Lỗi khi cập nhật");
@@ -90,6 +98,18 @@ class StudentController extends Controller
         return redirect("list-student")->with('success',"Cập nhật thành công");
     }
 
+    public function DetailStudent($id){
+        $students = Student::findOrFail($id);
+        $attendances = Attendance::with(['Shift','Subject','Student'])
+            ->where('id_student',$students->id)
+            ->groupBy('id_subject')
+            ->get();
+//        dd($attendances);
+        return view("student/detail_student",[
+            'students'=>$students,
+            'attendances'=>$attendances,
+        ]);
+    }
 //    END STUDENT
 
 }

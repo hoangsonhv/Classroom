@@ -1,7 +1,6 @@
 @extends('layout')
 @push('title')
 <title>Thời khóa biểu</title>
-
 @endpush
 @push('link')
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -199,7 +198,7 @@
                                                 </td>
                                                 <td>{{ $schedule->subject->name }}</td>
                                                 <td>
-                                                    {{ implode($list_name, ' -- ') }}
+                                                    {!! implode($list_name, "<br>") !!}
                                                 </td>
                                                 <td>
                                                     <div class="form-button-action">
