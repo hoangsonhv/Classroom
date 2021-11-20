@@ -8,6 +8,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TuitionController;
+use App\Http\Controllers\pdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,4 +66,4 @@ Route::get('/delete-shift/{id}',[ShiftController::class,'deleteShift']);
 Route::get('/edit-shift/{id}',[ShiftController::class,'editShift']);
 Route::post('/save-shift/{id}',[ShiftController::class,'saveShift']);
 
-
+Route::get('pdf', [pdfController::class, 'index']);

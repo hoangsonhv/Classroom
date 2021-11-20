@@ -151,7 +151,7 @@
                                             }
                                         @endphp
                                         <tr>
-                                            <td><a href="{{ url("detail-student",['id'=>$student->id]) }}" style="text-decoration: none">{{ $student->name }}</a></td>
+                                            <td style="line-height: 1.2"><a href="{{ url("detail-student",['id'=>$student->id]) }}" style="text-decoration: none">{{ $student->name }}</a></td>
                                             <td>{{ $student->phone }}</td>
                                             <td>{{ $student->address }}</td>
                                             <td style="line-height: 1.2;max-width: 150px;text-overflow: clip;"><a href="{{ $student->link }}">{{ $student->link }}</a></td>

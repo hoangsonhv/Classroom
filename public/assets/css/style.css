@@ -103,11 +103,26 @@
     margin-top: 30px;
     margin-bottom: 50px;
 }
-.h1-style{
+.h1-style {
     border-bottom: 1px dashed;
     width: 100%;
     margin: auto;
     color: #0143fc;
     border-width: 5px;
+}
+.abc{
+    display: flex !important;
+}
+.tuition{
+    height: auto;
+    border: 2px solid #EBEDF2;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    border-top: 1px solid black !important;
+}
 
+@media (max-width: 768px) {
+    .abc{
+        display: block !important;
+    }
 }

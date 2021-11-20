@@ -8,7 +8,9 @@ use App\Models\Shift;
 use App\Models\Student;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use MongoDB\Driver\Exception\Exception;
+use Barryvdh\DomPDF\PDF;
 
 class StudentController extends Controller
 {
@@ -99,15 +101,24 @@ class StudentController extends Controller
     }
 
     public function DetailStudent($id){
+        $months = Carbon::now()->month;
         $students = Student::findOrFail($id);
         $attendances = Attendance::with(['Shift','Subject','Student'])
             ->where('id_student',$students->id)
             ->groupBy('id_subject')
             ->get();
 //        dd($attendances);
+        session([
+            'id_st'=>$id,
+//            'data_month'=>$months,
+//            'data_students'=>$students,
+//            'data_$attendances'=>$attendances,
+        ]);
+
         return view("student/detail_student",[
             'students'=>$students,
             'attendances'=>$attendances,
+            'months'=>$months,
         ]);
     }
 //    END STUDENT
