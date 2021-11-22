@@ -28,6 +28,7 @@ use App\Http\Controllers\pdfController;
 Route::get('/',[WebController::class,'Home']);
 
 Route::get('/list-student',[StudentController::class,'ListStudent']);
+Route::get('/tuition-student',[StudentController::class,'TuitionStudent']);
 Route::post('/add-student',[StudentController::class,'AddStudent']);
 Route::get('/delete-student/{id}',[StudentController::class,'deleteStudent']);
 Route::get('/edit-student/{id}',[StudentController::class,'editStudent']);
@@ -67,3 +68,4 @@ Route::get('/edit-shift/{id}',[ShiftController::class,'editShift']);
 Route::post('/save-shift/{id}',[ShiftController::class,'saveShift']);
 
 Route::get('pdf', [pdfController::class, 'index']);
+Route::post('tuitions/{id}', [pdfController::class, 'AddTuition']);

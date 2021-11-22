@@ -128,7 +128,7 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table id="add-row" class="display table table-striped table-hover" >
+                                <table id="add-row" class="display table table-bordered table-striped table-hover" >
                                     <thead>
                                     <tr>
                                         <th>Họ và Tên</th>

@@ -82,7 +82,7 @@
                 <div class="col-md-12 tuition">
                     <p style="margin: 0 auto;text-align: center;padding: 1% ">
                         <span style="color: red;font-family: DejaVu Sans">Học phí tháng {{ $months }}:</span>
-                        <span style="color: blue;font-family: DejaVu Sans"> {{ number_format($attens2 * 1000000) }} đ</span>
+                        <span style="color: blue;font-family: DejaVu Sans"> {{ number_format($attens2 * 100000) }} đ</span>
                     </p>
                 </div>
 

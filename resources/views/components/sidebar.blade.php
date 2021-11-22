@@ -112,7 +112,7 @@
                     <div class="collapse" id="base3">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ url('list-tuition') }}">
+                                <a href="{{ url('tuition-student') }}">
                                     <span class="sub-item">Danh sách học phí</span>
                                 </a>
                             </li>

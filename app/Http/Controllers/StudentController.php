@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Models\Shift;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\Tuition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use MongoDB\Driver\Exception\Exception;
@@ -14,7 +15,7 @@ use Barryvdh\DomPDF\PDF;
 
 class StudentController extends Controller
 {
-    //    STUDENT
+    //Danh sách HS
 
     public function ListStudent(){
         $students = Student::all();
@@ -26,7 +27,6 @@ class StudentController extends Controller
     }
 
     public function AddStudent(Request $request){
-//        dd($request);
         $request->validate([
             'name' => 'required',
             'address' => 'required',
@@ -65,7 +65,6 @@ class StudentController extends Controller
     public function editStudent($id){
         $student = Student::findOrFail($id);
         $subject = Subject::all();
-//        dd($subject);
         return view('student/edit_student', [
             'student'=>$student,
             'subject'=>$subject,
@@ -73,7 +72,6 @@ class StudentController extends Controller
     }
 
     public function saveStudent(Request $request,$id){
-//        dd($request);
         $request->validate([
             'name' => 'required',
             'note' => 'required',
@@ -100,25 +98,89 @@ class StudentController extends Controller
         return redirect("list-student")->with('success',"Cập nhật thành công");
     }
 
-    public function DetailStudent($id){
-        $months = Carbon::now()->month;
+//
+
+    //Danh sách Học phí
+
+    public function TuitionStudent(Request $request){
+        $currentmonth = new Carbon($request->thang);
+        if ($request->thang){
+            $months = $currentmonth->month;
+            $startday = $currentmonth->startOfMonth()->toDateString();
+            $endday = $currentmonth->endOfMonth()->toDateString();
+        }else{
+            $months = Carbon::now()->month;
+            $startday = Carbon::now()->startOfMonth()->toDateString();
+            $endday = Carbon::now()->endOfMonth()->toDateString();
+        }
+        $attendance = Attendance::with(['Shift','Subject','Student'])->groupBy('date')->get();
+        $attendance1 = Attendance::with(['Shift','Subject','Student'])
+            ->whereBetween('date',[$startday,$endday])
+            ->groupBy('id_student')->get();
+        $list_student = [];
+        $list_student1 = [];
+        foreach ($attendance as $atten){
+            $list_student[] = $atten->id_student;
+        }
+        foreach ($attendance1 as $atten1){
+            $list_student1[] = $atten1->id_student;
+        }
+        $students = Student::whereIn('id',$list_student)->get();
+        $students1 = Student::whereIn('id',$list_student1)->get();
+        $subjects = Subject::all();
+        return view('student/list_student_tuition',[
+            'students'=>$students,
+            'students1'=>$students1,
+            'subjects'=>$subjects,
+            'months'=>$months,
+            'startday'=>$startday,
+            'endday'=>$endday,
+            'attendance'=>$attendance,
+            'attendance1'=>$attendance1,
+
+        ]);
+    }
+
+    //Chi tiết học sinh + học phí
+
+    public function DetailStudent($id,Request $request){
+//        $months = Carbon::now()->month;
+        $currentmonth = new Carbon($request->thang);
+//        dd($request);
+        if ($request->thang){
+            $months = $currentmonth->month;
+            $startday = $currentmonth->startOfMonth()->toDateString();
+            $endday = $currentmonth->endOfMonth()->toDateString();
+        }else{
+            $months = Carbon::now()->month;
+            $startday = Carbon::now()->startOfMonth()->toDateString();
+            $endday = Carbon::now()->endOfMonth()->toDateString();
+        }
+        $tutions1 = Tuition::where('id_student',$id)->select('date')->get();
+
         $students = Student::findOrFail($id);
         $attendances = Attendance::with(['Shift','Subject','Student'])
             ->where('id_student',$students->id)
             ->groupBy('id_subject')
             ->get();
-//        dd($attendances);
-        session([
-            'id_st'=>$id,
-//            'data_month'=>$months,
-//            'data_students'=>$students,
-//            'data_$attendances'=>$attendances,
-        ]);
+
+        $attendances1 = Attendance::with(['Shift','Subject','Student'])
+            ->where('id_student',$students->id)
+            ->whereBetween('date',[$startday,$endday])
+            ->groupBy('id_subject')
+            ->get();
+        session(['id_st'=>$id]);
+        session(['month'=>$currentmonth]);
 
         return view("student/detail_student",[
             'students'=>$students,
             'attendances'=>$attendances,
+            'attendances1'=>$attendances1,
             'months'=>$months,
+            'startday'=>$startday,
+            'endday'=>$endday,
+            'tutions1'=>$tutions1,
+
         ]);
     }
 //    END STUDENT

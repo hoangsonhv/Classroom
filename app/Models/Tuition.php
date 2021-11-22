@@ -11,5 +11,5 @@ class Tuition extends Model
 
     public $table = "tuitions";
 
-    public $fillable = ['id','date','id_student'];
+    public $fillable = ['date','id_student'];
 }

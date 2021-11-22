@@ -98,7 +98,7 @@
                        <div class="card-body">
                            @if($students != null)
                                <div class="table-responsive" style="margin-top: 20px;margin-bottom: 20px">
-                                   <table id="basic-datatables"id="add-row" class="display table table-striped table-hover table-bordered" >
+                                   <table id="basic-datatables"  class="display table table-striped table-hover table-bordered" >
                                        <thead>
                                        <tr>
                                            <th>ID HS</th>
