@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        DB::table("users")->insert([
+            "name"=>"Hoàng Phượng",
+            "email"=>"admin@gmail.com",
+            "password"=>bcrypt("11111111"),
+        ]);
         // \App\Models\User::factory(10)->create();
 //        DB::table('Subjects')->truncate();
         $subjects = [
