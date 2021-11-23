@@ -10,7 +10,12 @@ use App\Models\Student;
 class WebController extends Controller
 {
     public function Home(){
-        return view('home');
+        $student = Student::all();
+        $subject = Subject::all();
+        return view('home',[
+            'student'=>$student,
+            'subject'=>$subject,
+        ]);
     }
 
 }

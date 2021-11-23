@@ -47,7 +47,7 @@
                                 <div class="col-md-6" style="text-align: right">
                                     <form action="" method="get">
                                         <select name="thang" style="padding: 5px">
-                                            <option hidden>-- Chọn --</option>
+                                            <option hidden>-- Chọn tháng--</option>
                                             <option value="January">Tháng 1</option>
                                             <option value="February">Tháng 2</option>
                                             <option value="March">Tháng 3</option>
@@ -73,7 +73,7 @@
                                         <thead>
                                         <tr style="text-align: center">
                                             <th>Họ và Tên</th>
-                                            <th>Địa chỉ</th>
+                                            <th>Số điện thoại</th>
                                             <th>Link FB</th>
                                             <th>SĐT Phụ huynh</th>
                                             <th>Trạng thái</th>
@@ -100,7 +100,7 @@
                                             @endphp
                                             <tr style="text-align: center">
                                                 <td style="line-height: 1.2"><a href="{{ url("detail-student",['id'=>$student->id]) }}" style="text-decoration: none">{{ $student->name }}</a></td>
-                                                <td>{{ $student->address }}</td>
+                                                <td>{{ $student->phone }}</td>
                                                 <td style="line-height: 1.2;max-width: 150px;text-overflow: clip;"><a href="{{ $student->link }}">{{ $student->link }}</a></td>
                                                 <td>{{ $student->phone_parent }}</td>
                                                 <td>
@@ -153,40 +153,54 @@
                         <div class="card-body">
                             <div class="table-responsive">
 
-{{--                                <table id="basic-datatables" class="display table-bordered table table-striped table-hover" >--}}
-{{--                                    <thead>--}}
-{{--                                    <tr style="text-align: center">--}}
-{{--                                        <th>Họ và Tên</th>--}}
-{{--                                        <th>Số điện thoại</th>--}}
-{{--                                        <th>Địa chỉ</th>--}}
-{{--                                        <th>Link FB</th>--}}
-{{--                                        <th>SĐT Phụ huynh</th>--}}
-{{--                                        <th>Ghi chú</th>--}}
-{{--                                        <th style="width: 10%">Chi tiết</th>--}}
-{{--                                    </tr>--}}
-{{--                                    </thead>--}}
-{{--                                    <tbody>--}}
-{{--                                    @foreach ($students_tuition as $student1)--}}
-{{--                                        <tr style="text-align: center">--}}
-{{--                                            <td style="line-height: 1.2"><a href="{{ url("detail-student",['id'=>$student1->id]) }}" style="text-decoration: none">{{ $student1->name }}</a></td>--}}
-{{--                                            <td>{{ $student1->phone }}</td>--}}
-{{--                                            <td>{{ $student1->address }}</td>--}}
-{{--                                            <td style="line-height: 1.2;max-width: 150px;text-overflow: clip;"><a href="{{ $student1->link }}">{{ $student1->link }}</a></td>--}}
-{{--                                            <td>{{ $student1->phone_parent }}</td>--}}
-{{--                                            <td style="color: red">{{ $student1->note }}</td>--}}
-{{--                                            <td>--}}
-{{--                                                <div class="form-button-action">--}}
-{{--                                                    <a href="{{ url("detail-student",['id'=>$student1->id]) }}">--}}
-{{--                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Chi tiết">--}}
-{{--                                                            <i class="fas fa-info-circle"></i>--}}
-{{--                                                        </button>--}}
-{{--                                                    </a>--}}
-{{--                                                </div>--}}
-{{--                                            </td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
-{{--                                    </tbody>--}}
-{{--                                </table>--}}
+                                <table id="basic-datatables" class="display table-bordered table table-striped table-hover" >
+                                    <thead>
+                                    <tr style="text-align: center">
+                                        <th>Họ và Tên</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Link FB</th>
+                                        <th>SĐT phụ huynh</th>
+                                        <th>Tháng chưa nộp học phí</th>
+                                        <th style="width: 10%">Chi tiết</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($students as $student1)
+                                        @php
+                                            $attendance = \App\Models\Attendance::with(['Shift','Subject','Student'])->where('id_student',$student1->id)->get();
+                                            $list_month = [];
+                                            foreach ($attendance as $attend){
+                                                $tuitions = \App\Models\Tuition::where('date',\Illuminate\Support\Carbon::parse($attend->date)->startOfMonth()->toDateString())
+                                                ->where('id_student',$attend->id_student)->first();
+                                                if ($tuitions == null){
+                                                    if (!in_array( \Illuminate\Support\Carbon::parse($attend->date)->month,$list_month)){
+                                                        $list_month[] = \Illuminate\Support\Carbon::parse($attend->date)->month;
+                                                    }
+                                                }
+                                            }
+                                        @endphp
+
+                                        <tr style="text-align: center">
+                                            <td style="line-height: 1.2"><a href="{{ url("detail-student",['id'=>$student1->id]) }}" style="text-decoration: none">{{ $student1->name }}</a></td>
+                                            <td>{{ $student1->phone }}</td>
+                                            <td style="line-height: 1.2;max-width: 150px;text-overflow: clip;"><a href="{{ $student1->link }}">{{ $student1->link }}</a></td>
+                                            <td>{{ $student1->phone_parent }}</td>
+                                            <td>
+                                                {{ implode(' , ',$list_month) }}
+                                            </td>
+                                            <td>
+                                                <div class="form-button-action">
+                                                    <a href="{{ url("detail-student",['id'=>$student1->id]) }}">
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Chi tiết">
+                                                            <i class="fas fa-info-circle"></i>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

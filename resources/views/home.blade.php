@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-title">Tổng Số Học Sinh</div>
-                            <div class="card-category">200 Học sinh đang theo học</div>
+                            <div class="card-category"><span style="color: red">{{ count($student) }}</span> Học sinh đang theo học</div>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-title">Tổng Số Môn Học</div>
-                            <div class="card-category">3 Môn học đang giảng dạy</div>
+                            <div class="card-category"><span style="color: red">{{ count($subject) }}</span> Môn học đang giảng dạy</div>
                         </div>
                     </div>
                 </div>

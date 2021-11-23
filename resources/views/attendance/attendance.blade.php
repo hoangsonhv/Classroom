@@ -32,6 +32,9 @@
                 </ul>
             </div>
             <div class="row">
+
+{{--                danh sách học sinh đã điểm danh--}}
+
                 <div class="col-md-12">
                     <div class="card">
                         @if($list_attendance->first() != null)
@@ -88,11 +91,14 @@
                         @endif
                     </div>
                 </div>
+
+{{--                Danh sách học sinh theo tkb--}}
+
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách điểm danh</h4>
+                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách điểm danh (Theo thời khóa biểu)</h4>
                             </div>
                         </div>
                        <div class="card-body">
@@ -161,6 +167,82 @@
                        </div>
                     </div>
                 </div>
+
+{{--                Danh sách học sinh--}}
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách học sinh</h4>
+                            </div>
+                        </div>
+                       <div class="card-body">
+                           @if($students1 != null)
+                               <div class="table-responsive" style="margin-top: 20px;margin-bottom: 20px">
+                                   <table id="multi-filter-select"  class="display table table-striped table-hover table-bordered" >
+                                       <thead>
+                                       <tr>
+                                           <th>ID HS</th>
+                                           <th>Họ và Tên</th>
+                                           <th>Môn Học</th>
+                                           <th>Ca Học</th>
+                                           <th style="max-width: 150px">Link FB</th>
+                                           <th style="width: 10%">Thao tác</th>
+                                       </tr>
+                                       </thead>
+                                       <tbody>
+                                       @foreach ($students1 as $student)
+                                           <tr>
+                                               <td>{{ $student->id }}</td>
+                                               <td>{{ $student->name }}</td>
+                                               <td>{{ session()->get('data_atten')['name'] }}</td>
+                                               <td>
+                                                   @if(session()->get('data_atten1')['name'] == 'ca-sang')
+                                                       Ca Sáng
+                                                   @elseif(session()->get('data_atten1')['name'] == 'ca-chieu')
+                                                       Ca Chiều
+                                                   @elseif(session()->get('data_atten1')['name'] == 'ca-toi')
+                                                       Ca Tối
+                                                   @endif
+                                               </td>
+                                               <td style="text-overflow: clip;max-width: 150px;line-height: 1.2"><a href="{{ $student->link }}">{{ $student->link }}</a></td>
+                                               <td style="text-align: center">
+                                               @php
+                                                   $list_attendance = \App\Models\Attendance::with(['Shift','Subject','Student'])
+                                                      ->where('date',session()->get('data_request')['time'])
+                                                      ->where('id_shift',$shifts->id)
+                                                      ->where('id_subject',$subject->id)
+                                                      ->where('id_student',$student->id)
+                                                      ->first();
+                                               @endphp
+                                                   @if($list_attendance != null)
+                                                       @if( $list_attendance->id_student == $student->id)
+                                                           <span style="font-size: 15px;color:blue;font-weight: 600">ĐÃ ĐIỂM DANH</span>
+                                                       @endif
+                                                   @else
+                                                       <form action="{{ url('attendances',['id'=>$student->id]) }}" enctype="multipart/form-data" method="post">
+                                                           @csrf
+                                                           <a href="{{ url('attendances',['id'=>$student->id]) }}" style="text-decoration: none">
+                                                               <button type="submit" data-toggle="tooltip" title="" class="btn btn-link" style="font-weight: 600;color: red">ĐIỂM DANH</button>
+                                                           </a>
+                                                       </form>
+                                                   @endif
+                                               </td>
+                                           </tr>
+                                       @endforeach
+                                       </tbody>
+                                   </table>
+                               </div>
+                           @else
+                               <div class="status-atten">
+                                   <h3 style="text-align: center;margin-top: 20px">Không có học sinh nào</h3>
+                               </div>
+                           @endif
+                       </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

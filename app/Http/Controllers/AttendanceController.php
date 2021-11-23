@@ -64,12 +64,13 @@ class AttendanceController extends Controller
 
                 // lấy hs
                 $students = Student::whereIn('id',$id_student)->get();
-            }
-            // lấy data điểm danh
 
-//        dd(session()->get('data_atten')['name']);
+            }
+            $students1 = Student::all();
+
             return view("attendance/attendance",[
                 'students'=>$students,
+                'students1'=>$students1,
                 'list_attendance'=>$list_attendance,
                 'subject'=>$subject,
                 'shifts'=>$shifts,

@@ -10,6 +10,7 @@ use App\Models\Subject;
 use App\Models\Tuition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use MongoDB\Driver\Exception\Exception;
 use Barryvdh\DomPDF\PDF;
 
@@ -113,21 +114,32 @@ class StudentController extends Controller
             $startday = Carbon::now()->startOfMonth()->toDateString();
             $endday = Carbon::now()->endOfMonth()->toDateString();
         }
-        $attendance = Attendance::with(['Shift','Subject','Student'])->groupBy('date')->get();
+
         $attendance1 = Attendance::with(['Shift','Subject','Student'])
             ->whereBetween('date',[$startday,$endday])
             ->groupBy('id_student')->get();
-        $list_student = [];
         $list_student1 = [];
-        foreach ($attendance as $atten){
-            $list_student[] = $atten->id_student;
-        }
         foreach ($attendance1 as $atten1){
             $list_student1[] = $atten1->id_student;
         }
-        $students = Student::whereIn('id',$list_student)->get();
         $students1 = Student::whereIn('id',$list_student1)->get();
         $subjects = Subject::all();
+
+        // học sinh đóng thiếu học phí
+
+        $attendance = Attendance::with(['Shift','Subject','Student'])->get();
+        $list_id_student = [];
+        foreach ($attendance as $attend){
+            $tuitions = Tuition::where('date',Carbon::parse($attend->date)->startOfMonth()->toDateString())
+                ->where('id_student',$attend->id_student)->first();
+            if ($tuitions == null){
+                if (!in_array($attend->id_student,$list_id_student))
+                $list_id_student[] = $attend->id_student;
+            }
+        }
+//        dd($list_id_student);
+
+        $students = Student::whereIn('id',$list_id_student)->get();
         return view('student/list_student_tuition',[
             'students'=>$students,
             'students1'=>$students1,

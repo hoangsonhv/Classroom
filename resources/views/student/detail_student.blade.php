@@ -30,7 +30,7 @@
                                 <div class="fillter">
                                     <form action="" method="get">
                                         <select name="thang" style="padding: 5px">
-                                            <option hidden>-- Chọn --</option>
+                                            <option hidden>-- Chọn tháng--</option>
                                             <option value="January">Tháng 1</option>
                                             <option value="February">Tháng 2</option>
                                             <option value="March">Tháng 3</option>
@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="col-md-12" style="display: flex;padding: 0">
                                             <div class="col-md-6" style="padding-left: 0;padding-right: 5px">
-                                                <a href="{{ url("pdf") }}"><button class="btn btn-danger" style="width: 100%">IN HỌC PHÍ</button></a>
+                                                <a href="{{ url("pdf") }}" target="_blank"><button class="btn btn-danger" style="width: 100%">IN HỌC PHÍ</button></a>
                                             </div>
                                             <div class="col-md-6" style="padding-right: 0;padding-left: 5px">
                                                 <form action="{{ url("tuitions",['id'=>session()->get('id_st')]) }}" method="post">

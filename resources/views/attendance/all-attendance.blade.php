@@ -25,7 +25,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách các buổi học</h4>
+                                <h4 class="card-title" style="color: blue;font-weight: 600">Danh sách các học sinh đã điểm danh</h4>
                             </div>
                         </div>
                         <div class="card-body">

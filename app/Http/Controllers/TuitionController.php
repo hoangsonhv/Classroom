@@ -12,7 +12,6 @@ class TuitionController extends Controller
         $students = Student::where('id',1)->first();
         $attendances = Attendance::get()
             ->groupBy('id_subject')->pluck('date','id_subject');
-
         dd($attendances);
     }
 }
